@@ -5,5 +5,8 @@ spring:
     active: dev
   cloud:
     config:
-      uri: http://localhost:8090
+      uri: http://localhost:8101
       fail-fast: true
+      enabled: true
+      label: master
+      profile: dev

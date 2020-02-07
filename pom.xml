@@ -21,6 +21,7 @@
         <module>configserver</module>
         <module>configClient</module>
         <module>remoteconfigserver</module>
+        <module>remoteconfigclient</module>
     </modules>
 
     <parent>

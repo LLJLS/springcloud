@@ -967,7 +967,7 @@ Spring Cloud Config, 通过服务端可以为多个客户端提供配置服务�
 
 ### Spring Cloud Config 本地配置
 
-#### 本地文件系统
+#### 本地服务端
 
 - 创建Maven，pom.xml
 
@@ -1031,7 +1031,7 @@ public class NativeConfigServerApp {
 
 `@EnableConfigServer`: 声明启动配置中心。
 
-#### 客户端
+#### 本地客户端
 
 - 创建Maven,pom.xml
 
@@ -1053,18 +1053,168 @@ spring:
   profiles:
     active: dev
   cloud:
-      uri: http://localhost:8090
-      fail-fast: true
+  	config:
+  		profile: dev
+      	uri: http://localhost:8090
+      	fail-fast: true
 ```
 
 > 属性说明
+
+`spring.profiles.active`: 表明要使用哪个配置文件，比如开发版，还是生产版
 
 `spring.cloud.config.uri`: 本地 Config Server 访问路径。
 
 `spring.cloud.config.fail-fase`: 设置客户端优先判断 Config Server 访问是否正常。
 
-通过 `spring.application.name` 和 `spring.profiles.active` 拼接目标配置文件名，nativeconfigclient-dev.yml,去 Config Server 中查找此文件。
+通过 `spring.application.name` 和 `spring.cloud.config.profile` 拼接目标配置文件名，nativeconfigclient-dev.yml,去 Config Server 中查找此文件。
 
 ###  Spring Cloud Config 远程配置
 
+#### 远程服务端
+
 - 创建 Maven，pom.xml
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-config-server</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+</dependencies>
+```
+
+- 创建配置文件，application.yml
+
+```yaml
+server:
+  port: 8101
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/LLJLS/springcloud.git
+          search-paths: config
+          username: *
+          password: *
+      label: master
+  application:
+    name: remoteconfigserver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka/
+  instance:
+    prefer-ip-address: true
+
+```
+
+> 属性说明
+
+`spring.cloud.config.server.git.uri`: git远程仓库地址
+
+`spring.cloud.config.server.git.search-paths`: 搜索路径，可以多个。
+
+`spring.cloud.config.server.git.username`: git 用户名 
+
+`spring.cloud.config.server.git.password`: git 密码
+
+`spring.cloud.config.lable`: 分支
+
+- 创建启动类
+
+```java
+package com.kevin.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+@SpringBootApplication
+@EnableConfigServer
+@EnableEurekaClient
+public class RemoteConfigServerApp {
+    public static void main(String[] args) {
+        SpringApplication.run(RemoteConfigServerApp.class,args);
+    }
+}
+```
+
+> 注解说明
+
+`@EnableConfigServer`: 启动配置中心
+
+#### 远程客户端
+
+- 创建Maven,pom.xml
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+</dependencies>
+```
+
+- 创建配置文件，bootstrap.yml
+
+```yaml
+spring:
+  application:
+    name: remoteconfigclient
+  cloud:
+    config:
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: remoteconfigserver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8010/eureka/
+  instance:
+    prefer-ip-address: true
+```
+
+> 属性说明
+
+`spring.cloud.discovery.enable`: 是否启动注册中心查找配置文件。
+
+`spring.cloud.discovery.service-id`: 注册中心中的服务id。
+
+- 启动类
+
+```java
+package com.kevin.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+@SpringBootApplication
+@EnableEurekaClient
+public class RemoteConfigClientApp {
+    public static void main(String[] args) {
+        SpringApplication.run(RemoteConfigClientApp.class,args);
+    }
+}
+```
+
+## 服务跟踪
+
+#### Spring Cloud Zipkin
+
+Zipkin 是一个可以采集并且跟踪分布式系统中请求数据的组件，让开发者可以更加直观的监控到请求在各个微服务所耗费的时间等，Zipkin：Zipkin Server、Zipkin Client。
+
+- 创建Maven，pom.xml
