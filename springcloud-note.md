@@ -1215,6 +1215,66 @@ public class RemoteConfigClientApp {
 
 #### Spring Cloud Zipkin
 
+##### ZipKin 服务端
+
 Zipkin 是一个可以采集并且跟踪分布式系统中请求数据的组件，让开发者可以更加直观的监控到请求在各个微服务所耗费的时间等，Zipkin：Zipkin Server、Zipkin Client。
 
-- 创建Maven，pom.xml
+注意：ZipKin 推荐使用编译版本，不推荐使用源码编译，否则后果自负。
+
+##### ZipKin 客户端
+
+- 创建Maven,pom.xml
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-zipkin</artifactId>
+    </dependency>
+</dependencies>
+```
+
+- 创建配置文件，application.yml
+
+```yaml
+server:
+  port: 8120
+spring:
+  zipkin:
+    base-url: http://localhost:9411/
+    service:
+      name: zipkinclient
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0
+```
+
+> 属性说明
+
+`spring.zipkin.base-url`: 指定zipkin服务端的请求地址。
+
+`spring.zipkin.service.name`:  指定受监控的服务名称。
+
+`spring.sleuth.web.client.enable`: 是否启动监控。
+
+`spring.sleuth.sampler.probability`: 采样率。
+
+- 启动类
+
+```java
+package com.kevin.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ZipkinClientApp {
+    public static void main(String[] args) {
+        SpringApplication.run(ZipkinClientApp.class,args);
+    }
+}
+```
+

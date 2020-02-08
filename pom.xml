@@ -18,10 +18,12 @@
         <module>ribbon</module>
         <module>fegin</module>
         <module>hystrix</module>
-        <module>configserver</module>
-        <module>configClient</module>
+        <module>nativeconfigserver</module>
+        <module>nativeconfigclient</module>
         <module>remoteconfigserver</module>
         <module>remoteconfigclient</module>
+        <module>zipkinserver</module>
+        <module>zipkinclient</module>
     </modules>
 
     <parent>
