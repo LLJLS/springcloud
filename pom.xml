@@ -24,6 +24,7 @@
         <module>remoteconfigclient</module>
         <module>zipkinserver</module>
         <module>zipkinclient</module>
+        <module>zookeeper</module>
     </modules>
 
     <parent>
