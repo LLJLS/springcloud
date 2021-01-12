@@ -25,6 +25,7 @@
         <module>zipkinserver</module>
         <module>zipkinclient</module>
         <module>zookeeper</module>
+        <module>hadoop</module>
     </modules>
 
     <parent>
