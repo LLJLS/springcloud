@@ -1,4 +1,4 @@
-package com.kevin.hadoop;
+package com.kevin.hadoop.hdfs;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
