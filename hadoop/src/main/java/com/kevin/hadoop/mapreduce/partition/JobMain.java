@@ -26,22 +26,20 @@ public class JobMain extends Configured implements Tool {
 
         // job
         Job job = Job.getInstance(super.getConf(), "partitionerJob");
-
         // inputformat
         job.setInputFormatClass(TextInputFormat.class);
-        TextInputFormat.addInputPath(job,new Path("hdfs://node1:8020/partitionerCount"));
-//        TextInputFormat.addInputPath(job,new Path("file:///C:\\Users\\rr\\Desktop\\test\\origin"));
+//        TextInputFormat.addInputPath(job,new Path("hdfs://node1:8020/partitionerCount"));
+        TextInputFormat.addInputPath(job,new Path("file:///C:\\Users\\rr\\Desktop\\test\\origin"));
 
         // mapper
         job.setMapperClass(PartitionMapper.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(NullWritable.class);
 
+        // shuffer，分区,排序，规约，分组
         // partition
         job.setPartitionerClass(MyPartitioner.class);
         job.setNumReduceTasks(4);
-
-        // shuffer
 
         // reduce
         job.setReducerClass(PartitionReducer.class);
@@ -49,13 +47,13 @@ public class JobMain extends Configured implements Tool {
         job.setOutputValueClass(NullWritable.class);
 
         // outputformat
-//        Path path = new Path("file:///C:\\Users\\rr\\Desktop\\test\\result");
-        Path path = new Path("hdfs://node1:8020/partitionerCount_out");
+        Path path = new Path("file:///C:\\Users\\rr\\Desktop\\test\\result");
+//        Path path = new Path("hdfs://node1:8020/partitionerCount_out");
         job.setOutputFormatClass(TextOutputFormat.class);
         TextOutputFormat.setOutputPath(job,path);
 
-        FileSystem fileSystem = FileSystem.get(new URI("hdfs://node1:8020/"), new Configuration(), "root");
-//        FileSystem fileSystem = LocalFileSystem.get(new Configuration());
+//        FileSystem fileSystem = FileSystem.get(new URI("hdfs://node1:8020/"), new Configuration(), "root");
+        FileSystem fileSystem = LocalFileSystem.get(new Configuration());
         boolean exists = fileSystem.exists(path);
         if (exists) {
             fileSystem.delete(path,true);
