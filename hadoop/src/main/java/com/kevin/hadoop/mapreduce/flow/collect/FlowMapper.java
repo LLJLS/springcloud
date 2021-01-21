@@ -1,7 +1,6 @@
-package com.kevin.hadoop.mapreduce.flow;
+package com.kevin.hadoop.mapreduce.flow.collect;
 
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 

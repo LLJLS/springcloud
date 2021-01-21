@@ -1,4 +1,4 @@
-package com.kevin.hadoop.mapreduce.flow;
+package com.kevin.hadoop.mapreduce.flow.collect;
 
 import org.apache.hadoop.io.Writable;
 
