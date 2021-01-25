@@ -19,7 +19,7 @@ public class JobMain extends Configured implements Tool {
         Job job = Job.getInstance(super.getConf(),"flow");
         // input
         job.setInputFormatClass(TextInputFormat.class);
-        TextInputFormat.addInputPath(job,new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\original"));
+        TextInputFormat.addInputPath(job,new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\collect\\original"));
         // mapper
         job.setMapperClass(FlowMapper.class);
         job.setMapOutputKeyClass(Text.class);
@@ -32,7 +32,7 @@ public class JobMain extends Configured implements Tool {
         job.setOutputValueClass(FlowBean.class);
 
         // output
-        Path path = new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\result");
+        Path path = new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\collect\\result");
         job.setOutputFormatClass(TextOutputFormat.class);
         TextOutputFormat.setOutputPath(job,path);
 

@@ -17,7 +17,7 @@ public class JobMain extends Configured implements Tool {
     public int run(String[] strings) throws Exception {
         Job job = Job.getInstance(super.getConf(), "flow_sort");
         job.setInputFormatClass(TextInputFormat.class);
-        TextInputFormat.addInputPath(job,new Path("file:///D:\\hadoopJob\\flow\\sort\\original"));
+        TextInputFormat.addInputPath(job,new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\collect\\result"));
 
         job.setMapperClass(SortMapper.class);
         job.setMapOutputKeyClass(SortBean.class);
@@ -27,7 +27,7 @@ public class JobMain extends Configured implements Tool {
         job.setOutputKeyClass(SortBean.class);
         job.setOutputValueClass(NullWritable.class);
 
-        Path path = new Path("file:///D:\\hadoopJob\\flow\\sort\\result");
+        Path path = new Path("file:///C:\\Users\\rr\\Desktop\\test\\flow\\sort");
         job.setOutputFormatClass(TextOutputFormat.class);
         TextOutputFormat.setOutputPath(job,path);
 
