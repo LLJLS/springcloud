@@ -1,4 +1,4 @@
-package com.kevin.hadoop.mapreduce.flow.sort;
+package com.kevin.hadoop.mapreduce.flow_example.sort;
 
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Reducer;

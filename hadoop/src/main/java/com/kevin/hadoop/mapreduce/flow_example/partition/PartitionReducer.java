@@ -1,4 +1,4 @@
-package com.kevin.hadoop.mapreduce.flow.partition;
+package com.kevin.hadoop.mapreduce.flow_example.partition;
 
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
