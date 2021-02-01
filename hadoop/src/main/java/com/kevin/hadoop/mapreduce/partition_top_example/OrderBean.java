@@ -45,7 +45,7 @@ public class OrderBean implements WritableComparable<OrderBean> {
     public int compareTo(OrderBean o) {
         int i = 0;
         if (this.classify.compareTo(o.classify)==0) {
-            i = this.price.subtract(o.price).intValue();
+            i = -1 * this.price.subtract(o.price).intValue();
         }
         return i;
     }
