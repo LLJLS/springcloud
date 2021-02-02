@@ -8,12 +8,23 @@ import java.util.ArrayList;
 public class MyPartition extends Partitioner<OrderBean, NullWritable> {
     @Override
     public int getPartition(OrderBean orderBean, NullWritable nullWritable, int i) {
-       switch (orderBean.getClassify()){
-           case "computer":return 1;
-           case "phone":return 2;
-           case "food":return 3;
-           case "game":return 4;
-           default:return 0;
-       }
+        if ("computer".equals(orderBean.getClassify())) {
+            return 1;
+        } else if ("phone".equals(orderBean.getClassify())) {
+            return 2;
+        } else if ("food".equals(orderBean.getClassify())) {
+            return 3;
+        } else if ("game".equals(orderBean.getClassify())) {
+            return 4;
+        } else {
+            return 0;
+        }
+//       switch (orderBean.getClassify()){
+//           case "computer":return 1;
+//           case "phone":return 2;
+//           case "food":return 3;
+//           case "game":return 4;
+//           default:return 0;
+//       }
     }
 }

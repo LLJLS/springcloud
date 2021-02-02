@@ -6,6 +6,7 @@ import org.apache.hadoop.fs.LocalFileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
@@ -24,8 +25,9 @@ public class OrderJob extends Configured implements Tool {
         // suffer
         job.setPartitionerClass(MyPartition.class);
         job.setNumReduceTasks(5);
+        job.setGroupingComparatorClass(OrderGroupComparator.class);
         // reducer
-        job.setReducerClass(OrderReducer.class);
+//        job.setReducerClass(OrderReducer.class);
         job.setOutputKeyClass(OrderBean.class);
         job.setOutputValueClass(NullWritable.class);
         // output
@@ -33,7 +35,7 @@ public class OrderJob extends Configured implements Tool {
         job.setOutputFormatClass(OrderOutPutFormat.class);
         OrderOutPutFormat.setOutputPath(job,path);
         // fileSystem
-        LocalFileSystem fileSystem = LocalFileSystem.getLocal(super.getConf());
+        LocalFileSystem fileSystem = LocalFileSystem.getLocal(new Configuration());
         boolean exists = fileSystem.exists(path);
         if (exists) {
             fileSystem.delete(path,true);
