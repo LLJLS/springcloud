@@ -27,6 +27,10 @@
         <module>zookeeper</module>
         <module>hadoop</module>
         <module>hive</module>
+        <module>untitled</module>
+        <module>untitled</module>
+        <module>spark</module>
+        <module>spark-core</module>
     </modules>
 
     <parent>
