@@ -3,7 +3,7 @@ package com.kevin.spark.core.rdd.builder
 import org.apache.spark.{SparkConf, SparkContext}
 
 // RDD并行计算
-object Spark02_RDD_Operator_Transform_glom {
+object Spark02_RDD_Operator_Transform_Glom {
 
   def main(args: Array[String]): Unit = {
 
