@@ -31,6 +31,8 @@
         <module>untitled</module>
         <module>spark</module>
         <module>spark-core</module>
+        <module>untitled</module>
+        <module>canal</module>
     </modules>
 
     <parent>
