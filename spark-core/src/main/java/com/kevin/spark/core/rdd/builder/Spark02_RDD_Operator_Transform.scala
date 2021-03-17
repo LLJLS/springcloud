@@ -119,10 +119,37 @@ object Spark02_RDD_Operator_Transform {
     // spark中，shuffle操作必须落盘处理，不能在内存中数据等待，会导致内存溢出。Shuffle的操作性能非常低。
     // 从shuffle角度：reduceByKey比groupByKey性能高，因为reduceByKey支持分区内预聚合功能，可以有效减少shuffle时落盘的数据量
     // 从功能角度：reduceByKey其实包含分组和聚合功能，groupByKey只能分组。
+    rdd11.groupByKey().collect().foreach(println)
 
-    // agrddGateByKey
+    // aggregateByKey
+    println("------------------------------aggregateByKey-----------------------------")
+    val rdd12 = sc.makeRDD(List(
+      ("a",1),("a",2),("a",3),("a",5)
+    ),2)
+    rdd12.aggregateByKey(0/*初始值*/)(// 最终返回的数据结果应该和初始值的类型保持一致
+      (x,y)=>math.max(x,y),// 分区内计算规则
+      (x,y)=>x+y           // 分区间计算规则
+    ).collect().foreach(println)
+    // 计算平均值
+    rdd12.aggregateByKey((0,0))(
+      (t,v) => {
+        (t._1 + v,t._2 + 1)
+      },
+      (t1,t2)=>{
+        (t1._1+t2._1,t1._2+t2._2)
+      }
+    ).mapValues{
+      case (num,cnt) => {
+        num / cnt
+      }
+    }.collect().foreach(println)
+
+    // foldByKey
+    println("------------------------------foldByKey-----------------------------")
+    rdd12.foldByKey(0)(_+_).collect().foreach(println) /*当分区内和分区间的计算规则一样时，可以用这个方法简化*/
+    //
     // 停止环境
-    sc.stop()4
+    sc.stop()
   }
 
 }
