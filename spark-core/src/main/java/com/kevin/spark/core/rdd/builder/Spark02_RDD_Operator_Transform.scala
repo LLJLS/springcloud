@@ -131,7 +131,7 @@ object Spark02_RDD_Operator_Transform {
       (x,y)=>x+y           // 分区间计算规则
     ).collect().foreach(println)
     // 计算平均值
-    rdd12.aggregateByKey((0,0))(
+    rdd12.aggregateByKey((0,0))(// 第一个是值初始值，第二个是次数初始值
       (t,v) => {
         (t._1 + v,t._2 + 1)
       },
@@ -148,6 +148,15 @@ object Spark02_RDD_Operator_Transform {
     println("------------------------------foldByKey-----------------------------")
     rdd12.foldByKey(0)(_+_).collect().foreach(println) /*当分区内和分区间的计算规则一样时，可以用这个方法简化*/
     //
+    rdd12.combineByKey(
+      (v) => {
+        (v,1)
+      },
+      (k1:Int,v1:Int) => {
+      (k1)
+    }
+
+    )
     // 停止环境
     sc.stop()
   }
