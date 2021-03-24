@@ -33,6 +33,8 @@
         <module>spark-core</module>
         <module>untitled</module>
         <module>canal</module>
+        <module>untitled</module>
+        <module>https</module>
     </modules>
 
     <parent>
