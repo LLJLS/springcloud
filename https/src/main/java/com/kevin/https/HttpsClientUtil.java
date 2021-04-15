@@ -12,6 +12,7 @@ import java.util.*;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
+import com.kevin.test.starter.FormatTemplate;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -31,12 +32,15 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 
 /***
  * 利用HttpClient进行https请求的工具类
  */
+@Component
 public class HttpsClientUtil {
 
     private static Logger logger = LoggerFactory.getLogger(HttpsClientUtil.class);
@@ -219,12 +223,18 @@ public class HttpsClientUtil {
         }
         return "发送失败";
     }
-
+    @Autowired
+    private static FormatTemplate formatTemplate;
     public static void main(String[] args) {
 //        String result = HttpsClientUtil.sendByHttpsPost("", "https://test-api.htlic.com/access/o/pay/bjsPay/resultNotify");
-//        String result = HttpsClientUtil.sendByHttpsPost("", "https://www.baidu.com");
-        String result = HttpsClientUtil.sendByPost("{\"用户名\":\"username\"}", "http://localhost:8080/test/test?params=测试1");
-        System.out.println(result);
+//        String result = HttpsClientUtil.sendByHttpsPost("test", "https://test-api.htlic.com:12443/access/o/pay/bjsPay/resultNotify");
+//        String result = HttpsClientUtil.sendByPost("{\"用户名\":\"username\"}", "http://localhost:8080/test/test?params=测试1");
+//        System.out.println(result);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("username","Kevin");
+        map.put("password","12345678");
+        String s = formatTemplate.fomate(map);
+        System.out.println(s);
     }
 
 }

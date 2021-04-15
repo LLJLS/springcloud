@@ -1,17 +1,22 @@
 package com.kevin.springcloud.controller;
 
 import com.kevin.springcloud.entity.Student;
+import com.kevin.test.starter.FormatTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest")
 public class RestHandler {
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    FormatTemplate formatTemplate;
 
     @GetMapping("/findAll")
     public Collection<Student> findAll() {
@@ -48,6 +53,11 @@ public class RestHandler {
     @DeleteMapping("/deleteById/{id}")
     public void deleteById(@PathVariable("id") Long id) {
         restTemplate.delete("http://localhost:8020/student/deleteById",id);
+    }
+
+    @GetMapping("/test/format")
+    public String format(Map<String,String> map) {
+        return formatTemplate.fomate(map);
     }
 
 }

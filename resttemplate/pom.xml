@@ -11,5 +11,13 @@
 
     <artifactId>resttemplate</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.kevin.test</groupId>
+            <artifactId>starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
