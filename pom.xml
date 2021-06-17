@@ -35,6 +35,7 @@
         <module>canal</module>
         <module>untitled</module>
         <module>https</module>
+        <module>drools</module>
     </modules>
 
     <parent>

@@ -1,0 +1,20 @@
+package test1
+import com.kevin.drools.entity.Fact
+//global 全局变量
+//function  自定义函数
+//query 查询
+rule "age"
+    when $fact:Fact(age>0 && age <18) then $fact.setAge(20);update($fact);$fact.setSucc(false);
+end
+
+rule "age1"
+    when $fact:Fact(age>=18) then $fact.setSucc(true);
+end
+
+rule "age2"
+    when $fact:Fact(age>=18) then Fact fact = new Fact();fact.setAge(2); insert(fact);$fact.setSucc(true);
+end
+
+rule "age3"
+    when $fact:Fact(age>=18) then retract($fact);$fact.setSucc(true);
+end
