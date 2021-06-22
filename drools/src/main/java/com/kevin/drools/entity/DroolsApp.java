@@ -26,6 +26,10 @@ import org.drools.core.base.RuleNameEqualsAgendaFilter;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
+
+import java.util.Iterator;
 
 /**
  * @className DroolsApp.java
@@ -36,14 +40,26 @@ import org.kie.api.runtime.KieSession;
  */
 public class DroolsApp {
     public static void main(String[] args) {
+        System.setProperty("drools.dateformat","yyyy-MM-dd HH:mm:ss");
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kieClasspathContainer = kieServices.getKieClasspathContainer();
         KieSession kieSession = kieClasspathContainer.newKieSession("ksession-rules");
         Fact fact = new Fact();
-        fact.setAge(2);
+        fact.setAge(18);
+        kieSession.getAgenda().getAgendaGroup("test1").setFocus();
         kieSession.insert(fact);
         System.out.println(fact.getSucc());
-        kieSession.fireAllRules();
+//        kieSession.fireAllRules();
+//        new Thread(()->{
+//            kieSession.fireUntilHalt();
+//        }).start();
+        QueryResults query1 = kieSession.getQueryResults("query1");
+        Iterator<QueryResultsRow> iterator = query1.iterator();
+        for (QueryResultsRow row:query1) {
+            Fact $s = (Fact)row.get("$s");
+        }
+        kieSession.setGlobal("count",10);
+        kieSession.halt();
         System.out.println(fact.getSucc());
         kieSession.dispose();
     }

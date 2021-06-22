@@ -1,5 +1,6 @@
 package test1
 import com.kevin.drools.entity.Fact
+global java.lang.Integer count
 //global 全局变量
 //function  自定义函数
 //query 查询
@@ -17,4 +18,18 @@ end
 
 rule "age3"
     when $fact:Fact(age>=18) then retract($fact);$fact.setSucc(true);
+end
+
+rule "age4"
+    agenda-group "test1"
+    when $fact:Fact(age>=18) then retract($fact);$fact.setSucc(true);
+end
+
+rule "age5"
+    agenda-group "test1"
+    when $fact:Fact(age>=18) then retract($fact);$fact.setSucc(true);
+end
+
+query 'query1'
+    $s:Fact(age==18);
 end
