@@ -21,40 +21,36 @@ import java.util.Set;
 public class NioServer {
 
     public static void main(String[] args) {
-        ServerSocketChannel ssc = null;
         try {
-            ssc = ServerSocketChannel.open();
+            Selector selector = Selector.open();
+            ServerSocketChannel ssc = ServerSocketChannel.open();
             ssc.bind(new InetSocketAddress("127.0.0.1",9999));
             ssc.configureBlocking(false);
-            System.out.println("服务器正常启动,等待接收请求");
-
-            Selector selector = Selector.open();
             ssc.register(selector,SelectionKey.OP_ACCEPT);
+            System.out.println("服务器启动成功");
 
             while (true) {
-                if (selector.select()>0) {
-                    Set<SelectionKey> selectionKeys = selector.selectedKeys();
-                    Iterator<SelectionKey> iterator = selectionKeys.iterator();
-                    while (iterator.hasNext()) {
-                        SelectionKey key = iterator.next();
-                        iterator.remove();
-                        if (key.isAcceptable()) {
-                            ServerSocketChannel channel = (ServerSocketChannel) key.channel();
-                            SocketChannel sc = channel.accept();
-                            sc.configureBlocking(false);
-                            sc.register(selector,SelectionKey.OP_READ);
-                            key.interestOps(SelectionKey.OP_ACCEPT);
-                        } else if (key.isReadable()) {
-                            SocketChannel channel = (SocketChannel) key.channel();
-                            channel.configureBlocking(false);
-                            ByteBuffer allocate = ByteBuffer.allocate(1024);
-                            allocate.flip();
-                            int len = channel.read(allocate);
-                            System.out.println("服务端接收到客户端的信息：" + new String(allocate.array(),0,len));
+                int s = selector.select();
+                if(s==0) continue;
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectionKeys.iterator();
+                while (iterator.hasNext()) {
+                    SelectionKey key = iterator.next();
+                    iterator.remove();
 
-                            ByteBuffer wrap = ByteBuffer.wrap("hello,client".getBytes(StandardCharsets.UTF_8));
-                            channel.write(wrap);
-                        }
+                    if (key.isAcceptable()) {
+                        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
+                        SocketChannel client = serverSocketChannel.accept();
+                        client.configureBlocking(false);
+                        client.register(selector,SelectionKey.OP_READ);
+                    } else if (key.isReadable()) {
+                        SocketChannel client = (SocketChannel) key.channel();
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                        int len = client.read(byteBuffer);
+                        System.out.println("服务端接收到客户端信息："+new String(byteBuffer.array(),0,len));
+
+                        byteBuffer.flip();
+                        client.write(ByteBuffer.wrap("hello,client".getBytes(StandardCharsets.UTF_8)));
                     }
                 }
             }

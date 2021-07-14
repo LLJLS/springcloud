@@ -9,6 +9,7 @@
 /resttemplate/target/
 /ribbon/target/
 /zuul/target/
+/netty/target/
 # idea
 .idea
 *.iml
