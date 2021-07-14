@@ -10,8 +10,10 @@
 /ribbon/target/
 /zuul/target/
 /netty/target/
+*/.mvn/
 # idea
 .idea
 *.iml
 *.class
 */target
+.mvn
