@@ -14,7 +14,7 @@ import java.util.Map;
 public class RestHandler {
     @Autowired
     RestTemplate restTemplate;
-
+//
     @Autowired
     FormatTemplate formatTemplate;
 
