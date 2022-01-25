@@ -8,6 +8,12 @@
     <artifactId>springcloud</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <tomcat.version>8.0.42</tomcat.version>
+    </properties>
     <modules>
         <module>eurekaserver</module>
         <module>eurekaclient</module>

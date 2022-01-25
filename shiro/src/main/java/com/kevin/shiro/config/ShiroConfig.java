@@ -3,6 +3,8 @@ package com.kevin.shiro.config;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.realm.SimpleAccountRealm;
+import org.apache.shiro.realm.ldap.DefaultLdapRealm;
 import org.apache.shiro.spring.config.ShiroAnnotationProcessorConfiguration;
 import org.apache.shiro.spring.config.ShiroBeanConfiguration;
 import org.apache.shiro.spring.web.config.*;
@@ -21,12 +23,11 @@ import javax.annotation.PostConstruct;
         ShiroRequestMappingConfig.class})
 public class ShiroConfig {
 
-    @Autowired
-    private SecurityManager securityManager;
 
     @Bean
     public Realm realm() {
-        return null;
+
+        return new SimpleAccountRealm();
     }
 
     @Bean
@@ -43,12 +44,8 @@ public class ShiroConfig {
         chainDefinition.addPathDefinition("/docs/**", "authc, perms[document:read]");
 
         // all other paths require a logged in user
-        chainDefinition.addPathDefinition("/**", "authc");
+//        chainDefinition.addPathDefinition("/**", "authc");
         return chainDefinition;
     }
 
-    @PostConstruct
-    private void initStaticSecurityManager() {
-        SecurityUtils.setSecurityManager(securityManager);
-    }
 }
