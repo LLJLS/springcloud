@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>3.3.0</version>
+            <version>3.3.2</version>
         </dependency>
         <!-- hive基础组件 -->
         <dependency>
